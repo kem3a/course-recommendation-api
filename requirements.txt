@@ -1,2 +1,2 @@
-Flask-RESTful
 Flask-SQLAlchemy
+Flask-RESTX
