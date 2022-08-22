@@ -53,8 +53,27 @@ class Courses(Resource):
     search_parser.add_argument('career', type=str, required=False, case_sensitive=False, location = "args")
     search_parser.add_argument('level',type=str, required=False, case_sensitive=False, location = "args")
     search_parser.add_argument('access_type', type=str, required=False, case_sensitive=False, location = "args")
+    search_parser.add_argument('limit', type=int,default= 10 , required=False, location = "args")
     
     def get(self):
         args = Courses.search_parser.parse_args()
         data = {k:v for k,v in args.items() if v}
         return {"courses":[course.json() for course in CourseModel.find_courses(**data)]}, 200
+    
+
+class Roadmap(Resource):
+    
+    def get(self, courses_ids):
+        courses_ids_list = courses_ids.split("-")
+        courses = []
+        for i in range(len(courses_ids_list)):
+            try:
+                courses_ids_list[i] = int(courses_ids_list[i])
+                courses.append(CourseModel.find_course(id = courses_ids_list[i]).json())
+            except:
+                return {"message": "Roadmap should contain a list of valid course ids separated by a hyphen.",
+                        "example": "{}roadmap/1-2-3-4-5".format(reqparse.request.root_url)}, 400
+                
+            
+        return {"courses": courses}, 200
+        

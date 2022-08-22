@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api
 from db import db
-from resources.course import Course,Courses
+from resources.course import Course, Courses, Roadmap
 from resources.vote import Vote
 
 app =Flask(__name__)
@@ -20,6 +20,7 @@ def create_tables():
 api.add_resource(Course,"/course")
 api.add_resource(Courses,"/courses")
 api.add_resource(Vote,"/vote")
+api.add_resource(Roadmap, "/roadmap/<string:courses_ids>")
 
 if __name__ == "__main__":
     db.init_app(app)
