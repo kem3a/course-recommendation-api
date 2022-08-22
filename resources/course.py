@@ -26,8 +26,8 @@ class Course(Resource):
         try:
             course.save_to_db()
         except:
-            return {"message": "An error occurred inserting the item."}, 500
-        return course.json(), 200
+            return {"message": "An error occurred adding the course."}, 500
+        return course.json(), 201
         
     def delete(self):
         data = Course.id_parser.parse_args()
