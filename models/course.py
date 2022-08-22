@@ -47,7 +47,8 @@ class CourseModel(db.Model):
     
     @classmethod
     def find_courses(cls, **kwargs):        
+        limit = kwargs.pop("limit")
         if "q" in kwargs:
             q= kwargs.pop("q")
-            return cls.query.filter_by(**kwargs).filter(cls.title.contains(q)).order_by(cls.votes.desc())
-        return cls.query.filter_by(**kwargs).order_by(cls.votes.desc())
+            return cls.query.filter_by(**kwargs).filter(cls.title.contains(q)).order_by(cls.votes.desc()).limit(limit).all()
+        return cls.query.filter_by(**kwargs).order_by(cls.votes.desc()).limit(limit).all()
