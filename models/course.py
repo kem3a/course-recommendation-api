@@ -13,7 +13,6 @@ class CourseModel(db.Model):
     votes = db.Column(db.Integer, default = 0, nullable = False)
     last_updated_utc = db.Column(db.DateTime, default = datetime.utcnow, nullable = False)
     created_by = db.Column(db.String(15), nullable = False)
-   
     def __init__(self, title, provider, career, level, access_type, created_by):
         self.title = title
         self.provider = provider
@@ -47,11 +46,8 @@ class CourseModel(db.Model):
         return cls.query.filter_by(**kwargs).first()
     
     @classmethod
-    def find_courses(cls, **kwargs):       
-        
+    def find_courses(cls, **kwargs):        
         if "q" in kwargs:
             q= kwargs.pop("q")
-            return cls.query.filter_by(**kwargs).filter(cls.title.contains(q)).order_by(cls.votes)
-        return cls.query.filter_by(**kwargs).order_by(cls.votes)
-    
-    
+            return cls.query.filter_by(**kwargs).filter(cls.title.contains(q)).order_by(cls.votes.desc())
+        return cls.query.filter_by(**kwargs).order_by(cls.votes.desc())
