@@ -3,6 +3,7 @@ from flask import Flask
 from flask_restx import Api
 from db import db
 from resources.course import Course,Courses
+from resources.vote import Vote
 
 app =Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///course-api.db")
@@ -18,6 +19,7 @@ def create_tables():
 
 api.add_resource(Course,"/course")
 api.add_resource(Courses,"/courses")
+api.add_resource(Vote,"/vote")
 
 if __name__ == "__main__":
     db.init_app(app)
