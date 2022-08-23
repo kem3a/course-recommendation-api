@@ -4,6 +4,7 @@ from flask_restx import Api
 from db import db
 from resources.course import Course, Courses, Roadmap
 from resources.vote import Vote
+from resources.report import Report
 
 app =Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///course-api.db")
@@ -21,6 +22,8 @@ api.add_resource(Course,"/course")
 api.add_resource(Courses,"/courses")
 api.add_resource(Vote,"/vote")
 api.add_resource(Roadmap, "/roadmap/<string:courses_ids>")
+api.add_resource(Report, "/report/<string:course_id>")
+
 
 if __name__ == "__main__":
     db.init_app(app)

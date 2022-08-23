@@ -1,12 +1,11 @@
 from db import db
 
-class VoteModel(db.Model):
-    __tablename__ = "votes"
+class ReportModel(db.Model):
+    __tablename__ = "reports"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement=True)
     course_id = db.Column(db.Integer, db.ForeignKey("courses.id"))
     created_by = db.Column(db.String(15), nullable = False)
-    course = db.relationship("CourseModel")
     
     def __init__(self, course_id, created_by):
         self.course_id = course_id
@@ -16,10 +15,6 @@ class VoteModel(db.Model):
         db.session.add(self)
         db.session.commit()
     
-    def delete_from_db(self):
-        db.session.delete(self)
-        db.session.commit()
-        
     @classmethod    
-    def find_vote(cls, **kwargs):
+    def find_report(cls, **kwargs):
         return cls.query.filter_by(**kwargs).first()
