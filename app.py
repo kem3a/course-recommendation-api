@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api
 from db import db
-from resources.course import Course, Courses, Roadmap
+from resources.course import Course, CourseDelete, Roadmap
 from resources.vote import Vote
 from resources.report import Report
 
@@ -18,10 +18,10 @@ api = Api(app)
 def create_tables():
     db.create_all()
 
-api.add_resource(Course,"/course")
-api.add_resource(Courses,"/courses")
-api.add_resource(Vote,"/vote/<int:course_id>")
-api.add_resource(Roadmap, "/roadmap/<string:courses_ids>")
+api.add_resource(Course,"/courses")
+api.add_resource(CourseDelete,"/courses/<string:course_id>")
+api.add_resource(Vote,"/votes/<int:course_id>")
+api.add_resource(Roadmap, "/roadmaps/<string:courses_ids>")
 api.add_resource(Report, "/report/<string:course_id>")
 
 

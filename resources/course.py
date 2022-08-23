@@ -11,8 +11,18 @@ class Course(Resource):
     course_parser.add_argument('level',type=str, required=True, case_sensitive=False, choices = ["entry","mid","senior"] , help="This field must contain one of these three values (entry, mid, senior)")
     course_parser.add_argument('access_type', type=str, required=True, case_sensitive=False, choices = ["free","paid"], help="This field must contain one of these two values (free, paid)")
     
-    id_parser = reqparse.RequestParser(trim=True)
-    id_parser.add_argument('id', type=int,required=True, help="This field cannot be left blank!")
+    search_parser = reqparse.RequestParser(trim=True)
+    search_parser.add_argument('q', type=str, required=False, case_sensitive=False, location = "args")
+    search_parser.add_argument('provider', type=str, required=False, case_sensitive=False, location = "args")
+    search_parser.add_argument('career', type=str, required=False, case_sensitive=False, location = "args")
+    search_parser.add_argument('level',type=str, required=False, case_sensitive=False, location = "args")
+    search_parser.add_argument('access_type', type=str, required=False, case_sensitive=False, location = "args")
+    search_parser.add_argument('limit', type=int,default= 10 , required=False, location = "args")
+    
+    def get(self):
+        args = Course.search_parser.parse_args()
+        data = {k:v for k,v in args.items() if v}
+        return {"courses":[course.json() for course in CourseModel.find_courses(**data)]}, 200
     
     def post(self):
         data = Course.course_parser.parse_args()
@@ -28,10 +38,12 @@ class Course(Resource):
         except:
             return {"message": "An error occurred adding the course."}, 500
         return course.json(), 201
-        
-    def delete(self):
-        data = Course.id_parser.parse_args()
-        course = CourseModel.find_course(**data)
+      
+      
+class CourseDelete(Resource):
+    
+    def delete(self,course_id):
+        course = CourseModel.find_course(id = course_id)
         print(reqparse.request.remote_addr)
         if course:
             if not course.created_by == reqparse.request.remote_addr:
@@ -45,21 +57,7 @@ class Course(Resource):
         return {'message': 'Course not found.'}, 404
     
 
-class Courses(Resource):
-    
-    search_parser = reqparse.RequestParser(trim=True)
-    search_parser.add_argument('q', type=str, required=False, case_sensitive=False, location = "args")
-    search_parser.add_argument('provider', type=str, required=False, case_sensitive=False, location = "args")
-    search_parser.add_argument('career', type=str, required=False, case_sensitive=False, location = "args")
-    search_parser.add_argument('level',type=str, required=False, case_sensitive=False, location = "args")
-    search_parser.add_argument('access_type', type=str, required=False, case_sensitive=False, location = "args")
-    search_parser.add_argument('limit', type=int,default= 10 , required=False, location = "args")
-    
-    def get(self):
-        args = Courses.search_parser.parse_args()
-        data = {k:v for k,v in args.items() if v}
-        return {"courses":[course.json() for course in CourseModel.find_courses(**data)]}, 200
-    
+
 
 class Roadmap(Resource):
     
