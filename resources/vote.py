@@ -3,17 +3,15 @@ from models.vote import VoteModel
 from datetime import datetime
 
 class Vote(Resource):   
-    
-    vote_parser = reqparse.RequestParser(trim=True)
-    vote_parser.add_argument('course_id', type=int, required=True, help="This field cannot be left blank!")
-    
-    def post(self):
-        data = Vote.vote_parser.parse_args()
+
+    def post(self, course_id):
+        data = {"course_id": course_id,
+                "created_by": reqparse.request.remote_addr}
         vote = VoteModel.find_vote(**data)
         if vote:
             return {"message":"A vote with the same details already exists."}, 409
         
-        vote = VoteModel(**data, created_by=reqparse.request.remote_addr)
+        vote = VoteModel(**data)
         try:
             vote.save_to_db()
             vote.course.votes = vote.course.votes + 1
@@ -23,9 +21,10 @@ class Vote(Resource):
             return {"message": "An error occurred adding the vote."}, 500
         return {"message": "Vote successfully added."}, 201
         
-    def delete(self):
-        data = Vote.vote_parser.parse_args()
-        vote = VoteModel.find_vote(**data, created_by=reqparse.request.remote_addr)
+    def delete(self, course_id):
+        data = {"course_id": course_id,
+                "created_by": reqparse.request.remote_addr}
+        vote = VoteModel.find_vote(**data)
         if not vote:
             return {'message': 'You did not add a vote or your ip address has changed.'}, 404
         try:

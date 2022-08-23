@@ -20,7 +20,7 @@ def create_tables():
 
 api.add_resource(Course,"/course")
 api.add_resource(Courses,"/courses")
-api.add_resource(Vote,"/vote")
+api.add_resource(Vote,"/vote/<int:course_id>")
 api.add_resource(Roadmap, "/roadmap/<string:courses_ids>")
 api.add_resource(Report, "/report/<string:course_id>")
 

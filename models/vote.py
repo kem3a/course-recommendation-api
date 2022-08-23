@@ -4,7 +4,7 @@ class VoteModel(db.Model):
     __tablename__ = "votes"
     
     id = db.Column(db.Integer, primary_key = True, autoincrement=True)
-    course_id = db.Column(db.Integer, db.ForeignKey("courses.id"))
+    course_id = db.Column(db.Integer, db.ForeignKey("courses.id"),  nullable = False)
     created_by = db.Column(db.String(15), nullable = False)
     course = db.relationship("CourseModel")
     
