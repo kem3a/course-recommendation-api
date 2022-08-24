@@ -1,10 +1,16 @@
-from flask_restx import Resource, reqparse
+from flask_restx import Resource, reqparse, Namespace, fields
 from models.vote import VoteModel
 from datetime import datetime
 
-class Vote(Resource):   
+ns = Namespace("courses", "Courses operations")
 
+class Vote(Resource):   
+    
+    @ns.doc("add_vote")
+    @ns.doc(params={"course_id":"Course identifier"})
+    @ns.response(code=201,description="CREATED", mode=fields.Raw(example={"message":"Vote successfully added."}))
     def post(self, course_id):
+        '''Add a vote'''
         data = {"course_id": course_id,
                 "created_by": reqparse.request.remote_addr}
         vote = VoteModel.find_vote(**data)
@@ -20,8 +26,12 @@ class Vote(Resource):
         except:
             return {"message": "An error occurred adding the vote."}, 500
         return {"message": "Vote successfully added."}, 201
-        
+    
+    @ns.doc("delete_vote")
+    @ns.doc(params={"course_id":"Course identifier"})
+    @ns.response(code=200,description="OK", mode=fields.Raw(example={"message":"Vote deleted."}))
     def delete(self, course_id):
+        '''Delete a vote'''
         data = {"course_id": course_id,
                 "created_by": reqparse.request.remote_addr}
         vote = VoteModel.find_vote(**data)
@@ -34,5 +44,4 @@ class Vote(Resource):
         except:
             return {"message": "An error occurred deleting the vote."}, 500
         
-        return {'message': 'vote deleted.'}, 200
-    
+        return {'message': 'Vote deleted.'}, 200

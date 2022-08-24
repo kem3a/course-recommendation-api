@@ -1,9 +1,15 @@
-from flask_restx import Resource, reqparse
+from flask_restx import Resource, reqparse, Namespace, fields
 from models.report import ReportModel
 
-class Report(Resource):
+ns = Namespace("courses", "Courses operations")
 
+class Report(Resource):
+    
+    @ns.doc("add_report")
+    @ns.doc(params={"course_id":"Course identifier"})
+    @ns.response(code=201,description="CREATED", model=fields.Raw(example={"message":"Report created."}))
     def post(self, course_id):
+        '''Add a report'''
         data = {"course_id": course_id,
                 "created_by": reqparse.request.remote_addr}
         
