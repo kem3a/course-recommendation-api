@@ -8,7 +8,7 @@ class Vote(Resource):
     
     @ns.doc("add_vote")
     @ns.doc(params={"course_id":"Course identifier"})
-    @ns.response(code=201,description="CREATED", mode=fields.Raw(example={"message":"Vote successfully added."}))
+    @ns.response(code=201,description="CREATED", model=fields.Raw(example={"message":"Vote successfully added."}))
     def post(self, course_id):
         '''Add a vote'''
         data = {"course_id": course_id,
@@ -29,7 +29,7 @@ class Vote(Resource):
     
     @ns.doc("delete_vote")
     @ns.doc(params={"course_id":"Course identifier"})
-    @ns.response(code=200,description="OK", mode=fields.Raw(example={"message":"Vote deleted."}))
+    @ns.response(code=200,description="OK", model=fields.Raw(example={"message":"Vote deleted."}))
     def delete(self, course_id):
         '''Delete a vote'''
         data = {"course_id": course_id,
