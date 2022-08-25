@@ -1,5 +1,5 @@
 # Course Recommendation API
-
+##### Note: The project is up on https://course-rec-api.alhafizi.com
 
 ## Description 
 Course Recommendation API is a simple API that allows learners to recommend courses and get recommended courses.
@@ -20,4 +20,3 @@ pip3 install -r requirements.txt
 python3 app.py
 ```
 Now you can access the Swagger documentation via http://localhost:5000/
-###### Note: The project is not up yet.
