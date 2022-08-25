@@ -7,6 +7,8 @@ from resources.vote import Vote, ns as ns2
 from resources.report import Report,ns as ns3
 
 app =Flask(__name__)
+db.init_app(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///course-api.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
@@ -35,5 +37,4 @@ ns.add_resource(Report, "/report/<string:course_id>")
 
 
 if __name__ == "__main__":
-    db.init_app(app)
     app.run()

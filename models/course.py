@@ -12,7 +12,7 @@ class CourseModel(db.Model):
     access_type = db.Column(db.String(4), nullable = False)
     votes = db.Column(db.Integer, default = 0, nullable = False)
     last_updated_utc = db.Column(db.DateTime, default = datetime.utcnow, nullable = False)
-    created_by = db.Column(db.String(15), nullable = False)
+    created_by = db.Column(db.String(39), nullable = False)
     def __init__(self, title, provider, career, level, access_type, created_by):
         self.title = title
         self.provider = provider

@@ -5,7 +5,7 @@ class ReportModel(db.Model):
     
     id = db.Column(db.Integer, primary_key = True, autoincrement=True)
     course_id = db.Column(db.Integer, db.ForeignKey("courses.id"))
-    created_by = db.Column(db.String(15), nullable = False)
+    created_by = db.Column(db.String(39), nullable = False)
     
     def __init__(self, course_id, created_by):
         self.course_id = course_id
