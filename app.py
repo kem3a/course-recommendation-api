@@ -29,8 +29,8 @@ api.add_namespace(ns3)
 
 ns = api.namespace("courses", "Courses operations")
 
-ns.add_resource(Course,"/")
-ns.add_resource(CourseDelete,"/<string:course_id>")
+# ns.add_resource(Course,"/")
+# ns.add_resource(CourseDelete,"/<string:course_id>")
 ns.add_resource(Vote,"/votes/<int:course_id>")
 ns.add_resource(Roadmap, "/roadmaps/<string:courses_ids>")
 ns.add_resource(Report, "/report/<string:course_id>")
