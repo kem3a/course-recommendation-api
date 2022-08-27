@@ -7,12 +7,13 @@ from resources.vote import Vote, ns as ns2
 from resources.report import Report,ns as ns3
 
 app =Flask(__name__)
-db.init_app(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///course-api.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
-app.secret_key = os.environ.get("app_secret_key", "daskldsaf#@%$#@$cc")
+app.secret_key = os.environ.get("APP_SECRET_KEY", "daskldsaf#@%$#@$cc")
+
+db.init_app(app)
 
 api = Api(app, version='1.0', title='Course Recommendation API',
     description='''Course Recommendation API is a simple API that allows learners to recommend courses and get recommended courses
