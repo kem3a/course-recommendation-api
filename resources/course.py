@@ -1,24 +1,14 @@
-from flask_restx import Resource, reqparse, Namespace, fields
+from flask_restx import Resource, reqparse, fields
 from models.course import CourseModel
-
-ns = Namespace("courses", "Courses operations")
-course_model = ns.model("course_model", {
-    "id": fields.Integer(readonly=True, description="Course identifier", example=1),
-    "title": fields.String(required=True, description="Course title", example="introduction to airflow in python"),
-    "provider": fields.String(required=True, description="Course provider", example="datacamp"),
-    "career": fields.String(required=True, description="The career the course is intended/recommended for",
-                            example="data engineer"),
-    "level": fields.String(required=True, description="The career level the course is intended/recommended for",
-                           enum=["entry", "mid", "senior"], example="entry"),
-    "access_type": fields.String(required=True, description="Type of access", enum=["free", "paid"], example="paid"),
-    "votes": fields.Integer(readonly=True, description="Number of votes", example=27),
-    "last_updated_utc": fields.String(readonly=True, description="Last modified", example="2022-08-24 18:15:18.270185")
-})
-ns.add_model("course_model", course_model)
+from .models import courses_namespace as ns, course_model
+from .parsers import delete_parser
 
 
 @ns.route("/", methods=["GET", "POST"])
 class Course(Resource):
+    # todo AbdulKareem: I think you don't need the parser here
+    #  because @ns.expect is having a model, and if you set any attribute in the model
+    #  as required=True, it will be like parsing.
     course_parser = reqparse.RequestParser(trim=True)
     course_parser.add_argument('title', type=str, required=True, case_sensitive=False,
                                help="This field cannot be left blank!")
@@ -92,9 +82,15 @@ class CourseDelete(Resource):
 
     @ns.doc("delete_course")
     @ns.doc(params={"course_id": "Course identifier"})
+    @ns.expect(delete_parser)
     @ns.response(code=200, description="OK", model=fields.Raw(example={"message": "Course deleted"}))
-    def delete(self, course_id):
-        '''Delete a course'''
+    def delete(self):
+        """Delete a course"""
+        from flask import request
+        course_id = request.args.get("course_id")
+        if not course_id:
+            return "Error, you must pass course_id in the args.", 500
+
         course = CourseModel.find_course(id=course_id)
         print(reqparse.request.remote_addr)
         if course:
