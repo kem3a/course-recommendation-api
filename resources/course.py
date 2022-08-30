@@ -96,7 +96,7 @@ class Roadmap(Resource):
                 courses.append(CourseModel.find_course(id = courses_ids_list[i]).json())
             except:
                 return {"message": "Roadmap should contain a list of valid course ids separated by a hyphen.",
-                        "example": "{}roadmap/1-2-3-4-5".format(reqparse.request.root_url)}, 400
+                        "example": "{}roadmaps/1-2-3-4-5".format(reqparse.request.root_url)}, 400
                 
                 
         return {"courses": courses}, 200
