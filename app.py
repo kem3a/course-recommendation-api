@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api
 from db import db
-from resources.course import Course, CourseDelete, Roadmap, ns as ns1
+from resources.course import Course, Roadmap, ns as ns1
 from resources.vote import Vote, ns as ns2
 from resources.report import Report,ns as ns3
 
@@ -20,6 +20,13 @@ api = Api(app, version='1.0', title='Course Recommendation API',
     -
     https://github.com/kem3a/course-recommendation-api''')
 
+# TODO (Abdulkareem):
+#  best practice:
+#  1- format files before every commit
+#  2- all configs in a config file
+#  3- all redundant (e.g. parsers, models, expected ... etc) should be in a separate file.
+#  4- use methods in utils file.
+# TODO (NOT DONE)
 @app.before_first_request
 def create_tables():
     db.create_all()
@@ -30,8 +37,7 @@ api.add_namespace(ns3)
 
 ns = api.namespace("courses", "Courses operations")
 
-# ns.add_resource(Course,"/")
-# ns.add_resource(CourseDelete,"/<string:course_id>")
+ns.add_resource(Course,"/")
 ns.add_resource(Vote,"/votes/<int:course_id>")
 ns.add_resource(Roadmap, "/roadmaps/<string:courses_ids>")
 ns.add_resource(Report, "/report/<string:course_id>")
