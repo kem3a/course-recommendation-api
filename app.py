@@ -20,6 +20,13 @@ api = Api(app, version='1.0', title='Course Recommendation API',
     -
     https://github.com/kem3a/course-recommendation-api''')
 
+# TODO (Abdulkareem):
+#  best practice:
+#  1- format files before every commit
+#  2- all configs in a config file
+#  3- all redundant (e.g. parsers, models, expected ... etc) should be in a separate file.
+#  4- use methods in utils file.
+# TODO (NOT DONE)
 @app.before_first_request
 def create_tables():
     db.create_all()
