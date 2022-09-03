@@ -6,10 +6,8 @@ course_model = ns.model("course_model", {
     "id": fields.Integer(readonly=True, description="Course identifier", example=1),
     "title": fields.String(required=True, description="Course title", example="introduction to airflow in python"),
     "provider": fields.String(required=True, description="Course provider", example="datacamp"),
-    "career": fields.String(required=True, description="The career the course is intended/recommended for",
-                            example="data engineer"),
-    "level": fields.String(required=True, description="The career level the course is intended/recommended for",
-                           enum=["entry", "mid", "senior"], example="entry"),
+    "career": fields.String(required=True, description="The career the course is intended/recommended for", example="data engineer"),
+    "level": fields.String(required=True, description="The career level the course is intended/recommended for", enum=["entry", "mid", "senior"], example="entry"),
     "access_type": fields.String(required=True, description="Type of access", enum=["free", "paid"], example="paid"),
     "votes": fields.Integer(readonly=True, description="Number of votes", example=27),
     "last_updated_utc": fields.String(readonly=True, description="Last modified", example="2022-08-24 18:15:18.270185")
@@ -19,32 +17,19 @@ ns.add_model("course_model", course_model)
 
 class Course(Resource):
     course_parser = reqparse.RequestParser(trim=True)
-    course_parser.add_argument('title', type=str, required=True, case_sensitive=False,
-                               help="This field cannot be left blank!")
-    course_parser.add_argument('provider', type=str, required=True, case_sensitive=False,
-                               help="This field cannot be left blank!")
-    course_parser.add_argument('career', type=str, required=True, case_sensitive=False,
-                               help="This field cannot be left blank!")
-    course_parser.add_argument('level', type=str, required=True, case_sensitive=False,
-                               choices=["entry", "mid", "senior"],
-                               help="This field must contain one of these three values (entry, mid, senior)")
-    course_parser.add_argument('access_type', type=str, required=True, case_sensitive=False, choices=["free", "paid"],
-                               help="This field must contain one of these two values (free, paid)")
+    course_parser.add_argument('title', type=str, required=True, case_sensitive=False, help="This field cannot be left blank!")
+    course_parser.add_argument('provider', type=str, required=True, case_sensitive=False, help="This field cannot be left blank!")
+    course_parser.add_argument('career', type=str, required=True, case_sensitive=False, help="This field cannot be left blank!")
+    course_parser.add_argument('level', type=str, required=True, case_sensitive=False, choices=["entry", "mid", "senior"], help="This field must contain one of these three values (entry, mid, senior)")
+    course_parser.add_argument('access_type', type=str, required=True, case_sensitive=False, choices=["free", "paid"], help="This field must contain one of these two values (free, paid)")
 
     search_parser = reqparse.RequestParser(trim=True)
-    search_parser.add_argument('q', type=str, required=False, case_sensitive=False,
-                               help="A word to look for in course titles", location="args")
-    search_parser.add_argument('provider', type=str, required=False, case_sensitive=False, help="Course provider name",
-                               location="args")
-    search_parser.add_argument('career', type=str, required=False, case_sensitive=False,
-                               help="The career the course is intended/recommended for", location="args")
-    search_parser.add_argument('level', type=str, required=False, case_sensitive=False,
-                               help="The career level the course is intended/recommended for",
-                               choices=["entry", "mid", "senior"], location="args")
-    search_parser.add_argument('access_type', type=str, required=False, case_sensitive=False, help="Type of access",
-                               choices=["free", "paid"], location="args")
-    search_parser.add_argument('limit', type=int, default=10, required=False, help="The number of records returned",
-                               location="args")
+    search_parser.add_argument('q', type=str, required=False, case_sensitive=False, help="A word to look for in course titles", location="args")
+    search_parser.add_argument('provider', type=str, required=False, case_sensitive=False, help="Course provider name", location="args")
+    search_parser.add_argument('career', type=str, required=False, case_sensitive=False, help="The career the course is intended/recommended for", location="args")
+    search_parser.add_argument('level', type=str, required=False, case_sensitive=False, help="The career level the course is intended/recommended for", choices=["entry", "mid", "senior"], location="args")
+    search_parser.add_argument('access_type', type=str, required=False, case_sensitive=False, help="Type of access", choices=["free", "paid"], location="args")
+    search_parser.add_argument('limit', type=int, default=10, required=False, help="The number of records returned", location="args")
 
     delete_parser = reqparse.RequestParser(trim=True)
     delete_parser.add_argument('id', type=int, required=True, help="This field cannot be left blank!", location="args")
