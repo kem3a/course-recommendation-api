@@ -2,7 +2,7 @@ import os
 from flask import Flask
 from flask_restx import Api
 from db import db
-from resources.course import Course, CourseDelete, Roadmap, ns as ns1
+from resources.course import Course, Roadmap, ns as ns1
 from resources.vote import Vote, ns as ns2
 from resources.report import Report,ns as ns3
 
@@ -31,7 +31,6 @@ api.add_namespace(ns3)
 ns = api.namespace("courses", "Courses operations")
 
 ns.add_resource(Course,"/")
-ns.add_resource(CourseDelete,"/<string:course_id>")
 ns.add_resource(Vote,"/votes/<int:course_id>")
 ns.add_resource(Roadmap, "/roadmaps/<string:courses_ids>")
 ns.add_resource(Report, "/report/<string:course_id>")
