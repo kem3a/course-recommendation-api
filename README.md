@@ -1,5 +1,5 @@
 # Course Recommendation API
-##### Note: The project is up on https://course-rec-api.alhafizi.com
+
 
 ## Description 
 Course Recommendation API is a simple API that allows learners to recommend courses and get recommended courses.
